@@ -10,9 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHttpClient<RegisterService>();
+builder.Services.AddHttpClient<AccountService>();
 
-builder.Services.AddScoped<IRegisterService, RegisterService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 

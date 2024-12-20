@@ -8,10 +8,10 @@ namespace api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IRegisterService _registerService;
-        public AccountController(IRegisterService registerService)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
         {
-            _registerService = registerService;
+            _accountService = accountService;
         }
 
         [HttpPost("register")]
@@ -24,7 +24,7 @@ namespace api.Controllers
 
             try
             {
-                var newUserDto = await _registerService.RegisterUserAsync(registerDto);
+                var newUserDto = await _accountService.RegisterUserAsync(registerDto);
 
                 if (newUserDto != null)
                 {
@@ -41,6 +41,24 @@ namespace api.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+
+                var users = await _accountService.GetAllUsersAsync();
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
+
+
 
         //[HttpPost("login")]
         //public async Task<IActionResult> Login(LoginDto loginDto)
