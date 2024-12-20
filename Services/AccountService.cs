@@ -1,4 +1,5 @@
 ﻿using api.Dtos.Account;
+using CustomerApi.Dtos.Account;
 using CustomerApi.Interfaces;
 using CustomerApi.Models;
 using System.Text;
@@ -137,6 +138,36 @@ namespace CustomerApi
                 throw new Exception("Error occurred while calling the external API", ex);
             }
         }
+
+
+        public async Task UpdateUserAsync(string id, UpdateUserDto updateUserDto)
+        {
+            try
+            {
+                var apiUrl = $"http://localhost:5076/api/accounts/update/{id}";
+
+                var jsonPayload = JsonSerializer.Serialize(updateUserDto);
+
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("User updated successfully.");
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Failed to update user. Status: {response.StatusCode}, Error: {errorContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while updating the user", ex);
+            }
+        }
+
 
 
 

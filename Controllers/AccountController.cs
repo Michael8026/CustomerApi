@@ -1,4 +1,5 @@
 ﻿using api.Dtos.Account;
+using CustomerApi.Dtos.Account;
 using CustomerApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,6 +90,23 @@ namespace api.Controllers
             }
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateUser([FromRoute] string id, [FromBody] UpdateUserDto updateUserDto)
+        {
+            try
+            {
+                await _accountService.UpdateUserAsync(id, updateUserDto);
+
+                return Ok("Userprofile updated successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+
+
+
+        }
 
 
         //[HttpPost("login")]

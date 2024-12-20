@@ -1,4 +1,5 @@
 ﻿using api.Dtos.Account;
+using CustomerApi.Dtos.Account;
 using CustomerApi.Models;
 
 namespace CustomerApi.Interfaces
@@ -9,5 +10,6 @@ namespace CustomerApi.Interfaces
         Task<List<UserProfile>> GetAllUsersAsync();
         Task<UserProfile> GetUserByEmailAsync(string email);
         Task<NewUserDto> RegisterUserAsync(RegisterDto registerDto);
+        Task UpdateUserAsync(string id, UpdateUserDto updateUserDto);
     }
 }
