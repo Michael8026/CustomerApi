@@ -82,5 +82,63 @@ namespace CustomerApi
             }
         }
 
+        public async Task DeleteUserAsync(string id)
+        {
+            try
+            {
+                var apiUrl = $"http://localhost:5076/api/accounts/delete/{id}";
+
+                var response = await _httpClient.DeleteAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("User deleted successfully.");
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+
+                    throw new Exception($"Failed to delete user. Status: {response.StatusCode}, Error: {errorContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while deleting the user", ex);
+            }
+        }
+
+        public async Task<UserProfile> GetUserByEmailAsync(string email)
+        {
+            try
+            {
+
+                var apiUrl = $"http://localhost:5076/api/accounts/by_email?email={Uri.EscapeDataString(email)}";
+
+                var response = await _httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+
+                    var user = JsonSerializer.Deserialize<UserProfile>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    return user;
+                }
+                else
+                {
+                    throw new Exception($"Failed to get user by email. Status: {response.StatusCode}, Content: {await response.Content.ReadAsStringAsync()}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occurred while calling the external API", ex);
+            }
+        }
+
+
+
     }
 }

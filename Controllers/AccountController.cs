@@ -58,6 +58,37 @@ namespace api.Controllers
             }
         }
 
+        [HttpGet("by_email")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByEmailAsync(email);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                await _accountService.DeleteUserAsync(id);
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = ex.Message });
+            }
+        }
+
 
 
         //[HttpPost("login")]

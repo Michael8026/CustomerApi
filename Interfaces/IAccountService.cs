@@ -5,7 +5,9 @@ namespace CustomerApi.Interfaces
 {
     public interface IAccountService
     {
+        Task DeleteUserAsync(string id);
         Task<List<UserProfile>> GetAllUsersAsync();
+        Task<UserProfile> GetUserByEmailAsync(string email);
         Task<NewUserDto> RegisterUserAsync(RegisterDto registerDto);
     }
 }
